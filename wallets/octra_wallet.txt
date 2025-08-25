@@ -1,0 +1,17 @@
+OCTRA WALLET
+==================================================
+
+SECURITY WARNING: KEEP THIS FILE SECURE AND NEVER SHARE YOUR PRIVATE KEY
+
+Generated: 2025-06-30 09:22:50
+Address Format: oct + Base58(SHA256(pubkey))
+
+Mnemonic: used toe pink vault width skin anger nest method license clean all
+Private Key (B64): XGxLGXYdN234234234234
+Public Key (B64): ewrrwqerr=
+Address: werwerwfdsf
+
+Technical Details:
+Entropy: ewrwfrwrewqreqwr
+Signature Algorithm: sdffewr
+Derivation: BIP39-compatible (PBKDF2-HMAC-SHA512, 2048 iterations)
