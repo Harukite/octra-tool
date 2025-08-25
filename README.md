@@ -31,7 +31,7 @@
 - 错误和异常信息会高亮显示。
 
 ## 注意事项
-- 需注册 YesCaptcha 并获取 API key。
+- 需注册 [YesCaptcha](https://yescaptcha.com/i/H27VrR) 并获取 API key.
 - 建议使用代理，避免 IP 被限制。
 - 代理数量不足时，后续钱包将不使用代理。
 - 支持彩色日志输出，建议在支持 ANSI 颜色的终端运行。
