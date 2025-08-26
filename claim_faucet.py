@@ -117,10 +117,22 @@ def claim_faucet(address, recaptcha_token, proxy=None, proxy_info=None):
     try:
         response = requests.post(FAUCET_URL + "claim", files=payload, proxies=proxy)
         response.raise_for_status()
+        
+        # 打印返回的状态码和内容
+        print(f"{LogColor.OKCYAN}[钱包:{address}][代理:{proxy_info}] 响应状态码: {response.status_code}{LogColor.ENDC}")
+        print(f"{LogColor.OKCYAN}[钱包:{address}][代理:{proxy_info}] 响应内容: {response.text}{LogColor.ENDC}")
+        
+        # 尝试解析JSON响应
+        try:
+            json_response = response.json()
+            print(f"{LogColor.OKCYAN}[钱包:{address}][代理:{proxy_info}] JSON响应: {json.dumps(json_response, indent=2, ensure_ascii=False)}{LogColor.ENDC}")
+        except json.JSONDecodeError:
+            print(f"{LogColor.WARNING}[钱包:{address}][代理:{proxy_info}] 响应不是JSON格式{LogColor.ENDC}")
+        
         return True
     except requests.exceptions.RequestException as e:
         print(f"{LogColor.FAIL}[钱包:{address}][代理:{proxy_info}] 提交领水请求时发生错误: {e}{LogColor.ENDC}")
-        if response and response.text:
+        if 'response' in locals() and response and response.text:
             print(f"{LogColor.FAIL}[钱包:{address}][代理:{proxy_info}] 错误响应内容: {response.text}{LogColor.ENDC}")
         return False
 
