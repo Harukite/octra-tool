@@ -152,7 +152,7 @@ async def auto_multi_send(wallet_file='wallet.json', multi_file_base='multi.txt'
             used_targets.add(to_addr)  # 添加到已使用列表
             
             # 随机转账金额
-            amount = round(random.uniform(min_amount, min(max_amount, b * 0.8 / max_transfers)), 6)/100
+            amount = round(round(random.uniform(min_amount, min(max_amount, b * 0.8 / max_transfers)), 6)/100,5)
             
             # 检查余额是否足够
             if b < amount:
