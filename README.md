@@ -76,13 +76,6 @@ python3 octScan.py
 5. 🔍 查询 wallet.json 钱包余额与交易记录
 ```
 
-### 交互式客户端 (`cli.py`)
-
-运行交互式客户端：
-```bash
-python3 cli.py
-```
-
 需要 `wallet.json` 配置文件：
 ```json
 {
@@ -91,33 +84,6 @@ python3 cli.py
   "rpc": "https://octra.network"
 }
 ```
-
-### 水龙头领取 (`claim_faucet.py`)
-
-直接运行或通过主菜单调用：
-```bash
-python3 claim_faucet.py
-```
-
-## 📁 文件结构
-
-```
-claim/
-├── octScan.py              # 主功能程序
-├── cli.py                  # 交互式钱包客户端
-├── claim_faucet.py         # 水龙头自动领取
-├── config.ini              # 配置文件
-├── requirements.txt        # Python依赖
-├── wallets.txt            # 钱包地址列表
-├── proxies.txt            # 代理服务器列表
-├── multi.txt              # 爬取的目标钱包地址
-├── wallet.json            # 钱包配置文件
-└── wallets/               # 钱包文件目录
-    ├── octra_wallet_*.txt # 个人钱包文件
-    └── ...
-```
-
-## 🔧 核心功能详解
 
 ### 1. 智能批量转账
 
@@ -163,39 +129,10 @@ claim/
 **工作原理：**
 1. 从 `wallets.txt` 读取钱包地址列表
 2. 为每个钱包分配对应的代理（如果可用）
-3. 调用YesCaptcha API解决reCAPTCHA
+3. 调用[YesCaptcha](https://yescaptcha.com/i/H27VrR) API解决reCAPTCHA
 4. 提交领水请求到 faucet.octra.network
 5. 随机延迟后处理下一个钱包
 
-## ⚙️ 高级配置
-
-### 转账参数调整
-
-在 `octScan.py` 的 `auto_multi_send` 函数中可调整：
-
-```python
-min_amount = 0.001    # 最小转账金额
-max_amount = 1.0      # 最大转账金额
-max_transfers = len(wallets)  # 每个钱包最大转账次数
-delay_range = (2, 10) # 转账间隔延迟范围（秒）
-```
-
-### 查询超时设置
-
-在相关函数中可调整HTTP请求超时：
-
-```python
-timeout=aiohttp.ClientTimeout(total=10)  # 10秒超时
-```
-
-### 代理轮换策略
-
-目前使用钱包索引对应代理索引的策略，可根据需要修改为随机选择：
-
-```python
-def get_random_proxy():
-    return random.choice(all_proxies) if all_proxies else None
-```
 
 ## 🛡️ 安全注意事项
 
@@ -246,46 +183,6 @@ def get_random_proxy():
 import logging
 logging.basicConfig(level=logging.DEBUG)
 ```
-
-## 📊 性能优化
-
-### 1. 并发优化
-- 使用asyncio异步处理，提升I/O密集型操作效率
-- 合理控制并发数量，避免对服务器造成压力
-- 使用连接池复用HTTP连接
-
-### 2. 内存优化  
-- 及时关闭HTTP会话和连接
-- 限制交易历史记录数量
-- 使用生成器处理大量数据
-
-### 3. 网络优化
-- 实现请求重试机制
-- 使用合适的超时设置
-- 支持代理池轮换
-
-## 🔄 更新日志
-
-### v1.3.0 (2025-08-25)
-- ✅ 优化批量转账逻辑，不再创建多个multi_wallet文件
-- ✅ 改进为直接更新multi.txt文件内容
-- ✅ 修复转账金额计算问题（除以100降低金额）
-- ✅ 增强错误处理和日志输出
-
-### v1.2.0 
-- ✅ 新增并发余额查询功能
-- ✅ 支持隐私转账和加密余额查询
-- ✅ 优化转账成功率和稳定性
-
-### v1.1.0
-- ✅ 集成水龙头自动领取功能
-- ✅ 支持代理池和验证码自动解决
-- ✅ 改进用户界面和日志输出
-
-### v1.0.0
-- ✅ 基础钱包管理功能
-- ✅ 批量转账和地址爬取
-- ✅ 交互式钱包客户端
 
 ## 💡 使用技巧
 
