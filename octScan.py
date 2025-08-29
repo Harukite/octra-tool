@@ -86,7 +86,7 @@ async def auto_multi_send(wallet_file='wallet.json', multi_file_base='multi.txt'
     # 读取钱包配置
     with open(wallet_file, 'r') as f:
         wallets = json.load(f)
-
+    random.shuffle(wallets)
     print(f"{Style.INFO}{Style.ICON_INFO} 开始增强版批量转账，共 {len(wallets)} 个钱包{Style.END}")
     
     # 用于记录已使用的目标地址，确保不重复
