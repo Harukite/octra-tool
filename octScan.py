@@ -26,6 +26,7 @@ import json
 import random
 import asyncio
 from fake_useragent import UserAgent
+import time
 
 def fetch_oct_wallets(output_file='multi.txt'):
     """
@@ -331,25 +332,36 @@ def query_wallets_info(wallet_file='wallet.json'):
         print(f"{Style.OK}{r['idx']:>2}  {r['addr']:<42} {str(r['total_balance']):>10} {str(r['nonce']):>5} {str(r['tx_count']):>5} {str(r['pending_count']):>6}{Style.END}")
     print(f"{Style.INFO}{'-'*100}{Style.END}")
 
+def function_for_choice_2():
+    # 你的函数逻辑
+    print("执行函数...")
+
 if __name__ == '__main__':
     print(f"{Style.BOLD}{Style.ICON_INFO} 请选择功能：{Style.END}")
-    print(f"{Style.ICON_NEXT} 1. {Style.ICON_WALLET} 爬取钱包地址到 multi.txt")
-    print(f"{Style.ICON_NEXT} 2. {Style.ICON_SEND} 批量自动转账")
-    print(f"{Style.ICON_NEXT} 3. {Style.ICON_GEN} 生成 wallet.json（从 wallets 目录）")
-    print(f"{Style.ICON_NEXT} 4. 💧 一键领水")
-    print(f"{Style.ICON_NEXT} 5. 🔍 查询 wallet.json 钱包余额与交易记录")
+    print(f"{Style.ICON_NEXT} 1. {Style.ICON_SEND} 批量自动转账")
+    print(f"{Style.ICON_NEXT} 2. {Style.ICON_GEN} 生成 wallet.json（从 wallets 目录）")
+    print(f"{Style.ICON_NEXT} 3. 💧 一键领水")
+    print(f"{Style.ICON_NEXT} 4. 🔍 查询 wallet.json 钱包余额与交易记录")
     choice = input(f"{Style.INFO}请输入序号并回车：{Style.END}").strip()
 
     if choice == '1':
-        fetch_oct_wallets('multi.txt')
+        while True:
+            function_for_choice_2()
+            interval = random.randint(3600, 14400)  # 1到4小时（秒）
+            print(f"将在{interval // 60}分钟后重新执行。按Ctrl+C或输入'q'退出。")
+            try:
+                for _ in range(interval):
+                    time.sleep(1)
+                    # 检查用户是否想退出（可选：每隔一段时间询问）
+            except KeyboardInterrupt:
+                print("已退出循环。")
+                break
     elif choice == '2':
-        asyncio.run(auto_multi_send())
-    elif choice == '3':
         generate_wallet_json('wallets', 'wallet.json')
-    elif choice == '4':
+    elif choice == '3':
         import claim_faucet
         claim_faucet.main()
-    elif choice == '5':
+    elif choice == '4':
         query_wallets_info('wallet.json')
     else:
         print(f"{Style.FAIL}{Style.ICON_FAIL} 无效选择，请重新运行。{Style.END}")
