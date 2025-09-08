@@ -335,7 +335,17 @@ def query_wallets_info(wallet_file='wallet.json'):
 def function_for_choice_2():
     # 你的函数逻辑
     print("执行函数...")
-    asyncio.run(auto_multi_send())
+        # 获取当前事件循环，如果没有则新建
+    try:
+        loop = asyncio.get_event_loop()
+        if loop.is_closed():
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+
+    loop.run_until_complete(auto_multi_send())
 
 if __name__ == '__main__':
     print(f"{Style.BOLD}{Style.ICON_INFO} 请选择功能：{Style.END}")
@@ -346,8 +356,18 @@ if __name__ == '__main__':
     choice = input(f"{Style.INFO}请输入序号并回车：{Style.END}").strip()
 
     if choice == '1':
+        # 只创建一次事件循环
+        try:
+            loop = asyncio.get_event_loop()
+            if loop.is_closed():
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+        except RuntimeError:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
         while True:
             function_for_choice_2()
+            loop.run_until_complete(auto_multi_send())
             interval = random.randint(3600, 7200)  # 1到4小时（秒）
             print(f"将在{interval // 60}分钟后重新执行。按Ctrl+C或输入'q'退出。")
             try:
