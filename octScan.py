@@ -357,14 +357,14 @@ if __name__ == '__main__':
 
     if choice == '1':
         # 只创建一次事件循环
-        try:
-            loop = asyncio.get_event_loop()
-            if loop.is_closed():
-                loop = asyncio.new_event_loop()
-                asyncio.set_event_loop(loop)
-        except RuntimeError:
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
+        # try:
+        #     loop = asyncio.get_event_loop()
+        #     if loop.is_closed():
+        #         loop = asyncio.new_event_loop()
+        #         asyncio.set_event_loop(loop)
+        # except RuntimeError:
+        #     loop = asyncio.new_event_loop()
+        #     asyncio.set_event_loop(loop)
         while True:
             function_for_choice_2()
             loop.run_until_complete(auto_multi_send())
