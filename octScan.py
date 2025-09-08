@@ -332,9 +332,6 @@ def query_wallets_info(wallet_file='wallet.json'):
         print(f"{Style.OK}{r['idx']:>2}  {r['addr']:<42} {str(r['total_balance']):>10} {str(r['nonce']):>5} {str(r['tx_count']):>5} {str(r['pending_count']):>6}{Style.END}")
     print(f"{Style.INFO}{'-'*100}{Style.END}")
 
-def function_for_choice_2():
-    # 你的函数逻辑
-    print("执行函数...")
 
 if __name__ == '__main__':
     print(f"{Style.BOLD}{Style.ICON_INFO} 请选择功能：{Style.END}")
@@ -346,8 +343,8 @@ if __name__ == '__main__':
 
     if choice == '1':
         while True:
-            function_for_choice_2()
-            interval = random.randint(3600, 14400)  # 1到4小时（秒）
+            auto_multi_send()
+            interval = random.randint(3600, 7200)  # 1到4小时（秒）
             print(f"将在{interval // 60}分钟后重新执行。按Ctrl+C或输入'q'退出。")
             try:
                 for _ in range(interval):
