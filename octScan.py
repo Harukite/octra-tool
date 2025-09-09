@@ -332,16 +332,14 @@ def query_wallets_info(wallet_file='wallet.json'):
         print(f"{Style.OK}{r['idx']:>2}  {r['addr']:<42} {str(r['total_balance']):>10} {str(r['nonce']):>5} {str(r['tx_count']):>5} {str(r['pending_count']):>6}{Style.END}")
     print(f"{Style.INFO}{'-'*100}{Style.END}")
 
-def function_for_choice_2():
-    # 你的函数逻辑
+def function_for_choice_2(loop):
+    # 你的函数逻辑：使用外部传入的事件循环运行协程
     print("执行函数...")
-        # 获取当前事件循环，如果没有则新建
     try:
-        loop = asyncio.get_event_loop()
         if loop.is_closed():
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
-    except RuntimeError:
+    except Exception:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
 
@@ -356,19 +354,20 @@ if __name__ == '__main__':
     choice = input(f"{Style.INFO}请输入序号并回车：{Style.END}").strip()
 
     if choice == '1':
-        # 只创建一次事件循环
-        # try:
-        #     loop = asyncio.get_event_loop()
-        #     if loop.is_closed():
-        #         loop = asyncio.new_event_loop()
-        #         asyncio.set_event_loop(loop)
-        # except RuntimeError:
-        #     loop = asyncio.new_event_loop()
-        #     asyncio.set_event_loop(loop)
+        # 只创建一次事件循环并复用
+        try:
+            loop = asyncio.get_event_loop()
+            if loop.is_closed():
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+        except RuntimeError:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+
         while True:
-            function_for_choice_2()
-            loop.run_until_complete(auto_multi_send())
-            interval = random.randint(3600, 7200)  # 1到4小时（秒）
+            function_for_choice_2(loop)
+            # 已在 function_for_choice_2 中运行 auto_multi_send，移除重复调用
+            interval = random.randint(3600, 7200)  # 1到2小时（秒）
             print(f"将在{interval // 60}分钟后重新执行。按Ctrl+C或输入'q'退出。")
             try:
                 for _ in range(interval):
@@ -377,6 +376,11 @@ if __name__ == '__main__':
             except KeyboardInterrupt:
                 print("已退出循环。")
                 break
+        # 退出循环后可选择关闭事件循环
+        try:
+            loop.close()
+        except:
+            pass
     elif choice == '2':
         generate_wallet_json('wallets', 'wallet.json')
     elif choice == '3':
